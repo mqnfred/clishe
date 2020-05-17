@@ -1,0 +1,12 @@
+[package]
+name = "modularcli"
+version = "0.1.0"
+authors = ["Louis Feuvrier <louis.feuvrier@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "^1"
+# TODO: once published to crates.io, use 3.0.0 there
+clap = { git = "https://github.com/clap-rs/clap/" }
