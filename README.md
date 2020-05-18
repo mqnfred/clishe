@@ -1,12 +1,15 @@
 # MODULARCLI
 
-Write your CLI structure alongside your code. We are optimizing for:
+This is a thin wrapper around clap. It enables you to write your CLI using a
+different idiom. This idiom is optimized for:
 
  - Reduction of boilerplate/plumbing for repetitive command declaration
  - Access to command args, mutable state (context), return type
  - Command implementation and definition live side-to-side
 
 ## Example
+
+This is a simple app with dummy commands to display the spirit of modularcli.
 
 ```rust
 #[macro_use]
@@ -37,7 +40,7 @@ mod vegetables {
     use ::modularcli::prelude::*;
 
     dispatchers! {
-        #[clap(name = "veggies", about = "fresh from the garden")]
+        #[clap(about = "Fresh from the garden")]
         Vegetables(&self, _: &mut crate::Context) -> Result<()> [
             Carrots: Carrots,
             Lettuce: Lettuce,
@@ -69,7 +72,7 @@ mod meat {
     use ::modularcli::prelude::*;
 
     dispatchers! {
-        #[clap(about = "nothing like a properly cooked meat")]
+        #[clap(about = "Nothing like a properly cooked meat")]
         Meat(&self, _: &mut crate::Context) -> Result<()> [
             Beef: Beef,
         ],
@@ -86,7 +89,7 @@ mod meat {
 }
 ```
 
-This code will provide you with the following CLI:
+This code will provide you with the following program:
 
 ```
 $ ./modularcli
@@ -101,8 +104,8 @@ FLAGS:
 
 SUBCOMMANDS:
     help          Prints this message or the help of the given subcommand(s)
-    meat          nothing like a properly cooked meat
-    vegetables    fresh from the garden
+    meat          Nothing like a properly cooked meat
+    vegetables    Fresh from the garden
 $ ./modularcli vegetables lettuce friend
 success: Hello, friend!
 ```
@@ -118,4 +121,8 @@ success: Hello, friend!
 
 ### Testing
 
+ - Test more use-cases
+
 ### Documentation
+
+ - Example in the README.md does not show enough clap attributes used
