@@ -8,7 +8,9 @@ impl<C, R, A> ::clap::IntoApp for crate::Shell<C, R, A>
     where A: ::clap::Clap + crate::Command<C, R>,
 {
     fn into_app<'b>() -> ::clap::App<'b> {
-        ::clap::App::new("shell")
+        // TODO: the app should feature a clap `about`, but it does not look
+        // like this one is being forwarded/considered by the parent
+        ::clap::App::new("shell").about("Try out this CLI in a shell!")
     }
 
     fn augment_clap<'b>(app: ::clap::App<'b>) -> ::clap::App<'b> {
