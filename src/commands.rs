@@ -7,7 +7,7 @@ macro_rules! commands {
                 &$self:ident,
                 $state:ident: &mut $state_ty:ty
             ) -> Result<$ret_ty:ty> $body:block struct {
-                $(#[$sub_meta:meta] $field_name:ident: $field_ty:ty,)*
+                $($(#[$sub_meta:meta])? $field_name:ident: $field_ty:ty,)*
             }
         ) *
     ) => {
@@ -15,7 +15,7 @@ macro_rules! commands {
             #[derive(Clap)]
             $(#[$meta])*
             pub struct $name {
-                $(#[$sub_meta] $field_name: $field_ty,)*
+                $($(#[$sub_meta])* $field_name: $field_ty,)*
             }
 
             impl $name {

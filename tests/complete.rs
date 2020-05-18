@@ -1,43 +1,87 @@
 #[macro_use]
+extern crate clap;
+#[macro_use]
 extern crate modularcli;
 use ::modularcli::prelude::*;
 
-struct Context(String);
-
-commands! {
-    Remove(ctx: &mut Context, _matches: &ArgMatches) -> Result<()> {
-        ctx.0 = "remove called".to_owned();
-        Ok(())
-    } using App::new("remove"),
-}
+pub struct Context(String);
 
 dispatchers! {
-    Entry(_: &mut Context, _: &ArgMatches) -> Result<()> [
-        Remove,
-    ] using App::new("entry"),
+    Food(&self, _: &mut Context) -> Result<()> [
+        Meat: meat::Meat,
+        Veggies: veggies::Veggies,
+    ],
 }
 
-fn exec(ctx: &mut Context, args: Vec<&'static str>) -> Result<()> {
-    execute_command(
-        &mut Entry::default(),
-        ctx,
-        &args.into_iter().map(|s| s.to_owned()).collect(),
-    )
+mod meat {
+    use ::modularcli::prelude::*;
+
+    dispatchers! {
+        Meat(&self, _: &mut crate::Context) -> Result<()> [
+            Beef: Beef,
+        ],
+    }
+
+    commands! {
+        Beef(&self, ctx: &mut crate::Context) -> Result<()> {
+            ctx.0 = format!("Hello, {}!", self.name);
+            Ok(())
+        } struct {
+            name: String,
+        }
+    }
+}
+
+mod veggies {
+    use ::modularcli::prelude::*;
+
+    dispatchers! {
+        Veggies(&self, _: &mut crate::Context) -> Result<()> [
+            Carrots: Carrots,
+            Lettuce: Lettuce,
+        ],
+    }
+
+    commands! {
+        Carrots(&self, _ctx: &mut crate::Context) -> Result<()> {
+            Ok(())
+        } struct {
+            name: String,
+        }
+
+        Lettuce(&self, ctx: &mut crate::Context) -> Result<()> {
+            ctx.0 = if let Some(name) = self.name.as_ref() {
+                format!("Hello, {}!", name)
+            } else {
+                "Hello, world!".to_owned()
+            };
+
+            Ok(())
+        } struct {
+            name: Option<String>,
+        }
+    }
 }
 
 #[test]
-fn call_remove() {
+fn call_beef() {
+    assert!(Food::try_parse_from(vec!["food", "meat", "beef"]).is_err());
+
     let mut ctx = Context("".to_owned());
-    assert!(exec(&mut ctx, vec!["remove"]).is_ok());
-    assert_eq!(ctx.0, "remove called");
+    let app = Food::try_parse_from(vec!["food", "meat", "beef", "freddie"]).unwrap();
+    assert!(app.run(&mut ctx).is_ok());
+    assert_eq!(ctx.0, "Hello, freddie!");
 }
 
-/*
-hybrids! {
-    Nope(ctx: &mut Context, matches: &ArgMatches) -> Result<()> {
-        Ok(())
-    } dispatches [
-        Hello,
-    ] using App::new("hello"),
+#[test]
+fn call_lettuce() {
+    let mut ctx = Context("".to_owned());
+    let app = Food::try_parse_from(vec!["food", "veggies", "lettuce", "friend"]).unwrap();
+    assert!(app.run(&mut ctx).is_ok());
+    assert_eq!(ctx.0, "Hello, friend!");
+
+    let mut ctx = Context("".to_owned());
+    let app = Food::try_parse_from(vec!["food", "veggies", "lettuce"]).unwrap();
+    assert!(app.run(&mut ctx).is_ok());
+    assert_eq!(ctx.0, "Hello, world!");
 }
-*/

@@ -2,31 +2,35 @@
 macro_rules! dispatchers {
     (
         $(
-            $name:ident(&self, _: &mut $state_ty:ty) -> Result<()> [
-                $($(#[$sub_meta:meta])? $sub_name:ident: $sub:ty,)*
-            ]
+            $(#[$meta:meta])?
+            $name:ident(&self, _: &mut $state_ty:ty) -> Result<$ret_ty:ty> [
+                $($(#[$sub_meta:meta])? $sub_name:ident: $sub_ty:ty,)*
+            ],
         )*
     ) => {
         $(
             ::paste::item! {
                 #[derive(Clap)]
+                $(#[$meta])*
                 pub struct $name {
                     #[clap(subcommand)]
-                    subs: [< $name C o m m a n d s >],
+                    __subs: [< $name C o m m a n d s >],
                 }
             }
 
             ::paste::item! {
                 #[derive(Clap)]
                 enum [< $name C o m m a n d s >] {
-                    $($(#[$sub_meta])* $sub_name($sub),)*
+                    $(
+                        $(#[$sub_meta])* $sub_name($sub_ty),
+                    )*
                 }
             }
 
             ::paste::item! {
-                impl $name {
-                    pub fn run(&self, state: &mut $state_ty) -> Result<()> {
-                        match &self.subs {
+                impl Command<$state_ty, $ret_ty> for $name {
+                    fn run(&self, state: &mut $state_ty) -> Result<$ret_ty> {
+                        match &self.__subs {
                             $([< $name C o m m a n d s >]::$sub_name(sub) => sub.run(state),)*
                         }
                     }
