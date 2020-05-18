@@ -2,68 +2,36 @@
 macro_rules! dispatchers {
     (
         $(
-            $name:ident(
-                _: &mut $state_type:ty,
-                _: &ArgMatches
-            ) -> Result<()> [
-                $($subcmd:ident,) *
-            ] using $app:expr,
-        ) *
+            $name:ident(&self, _: &mut $state_ty:ty) -> Result<()> [
+                $($(#[$sub_meta:meta])? $sub_name:ident: $sub:ty,)*
+            ]
+        )*
     ) => {
         $(
-            pub struct $name {
-                subs: ::std::collections::BTreeMap<String, Box<dyn ::modularcli::Command<$state_type>>>,
-            }
-
-            impl Default for $name {
-                fn default() -> Self {
-                    type Command = Box<dyn ::modularcli::Command<$state_type>>;
-                    let mut subs = ::std::collections::BTreeMap::<String, Command>::default();
-                    $({
-                        let sub = $subcmd::default();
-                        subs.insert(sub.app().get_name().to_owned(), Box::new(sub));
-                    })*
-                    Self{subs}
+            ::paste::item! {
+                #[derive(Clap)]
+                pub struct $name {
+                    #[clap(subcommand)]
+                    subs: [< $name C o m m a n d s >],
                 }
             }
 
-            impl ::modularcli::Command<$state_type> for $name {
-                fn execute(
-                    &mut self,
-                    state: &mut $state_type,
-                    matches: &ArgMatches,
-                ) -> Result<()> {
-                    let app = self.app();
-                    ::modularcli::dispatch(&mut self.subs, state, matches, app)
+            ::paste::item! {
+                #[derive(Clap)]
+                enum [< $name C o m m a n d s >] {
+                    $($(#[$sub_meta])* $sub_name($sub),)*
                 }
+            }
 
-                fn app<'a>(&self) -> App<'a> {
-                    let mut app = $app;
-                    for (_, subcmd) in &self.subs {
-                        app = app.subcommand(subcmd.app());
+            ::paste::item! {
+                impl $name {
+                    pub fn run(&self, state: &mut $state_ty) -> Result<()> {
+                        match &self.subs {
+                            $([< $name C o m m a n d s >]::$sub_name(sub) => sub.run(state),)*
+                        }
                     }
-                    app
                 }
             }
         )*
-    }
-}
-
-pub fn dispatch<S>(
-    subs: &mut ::std::collections::BTreeMap<String, Box<dyn crate::Command<S>>>,
-    state: &mut S,
-    matches: &::clap::ArgMatches,
-    mut app: ::clap::App,
-) -> ::anyhow::Result<()> {
-    match matches.subcommand() {
-        (name, Some(matches)) => match subs.get_mut(name) {
-            Some(cmd) => cmd.execute(state, matches),
-            None => Err(::anyhow::Error::msg(format!(
-                "no subcommand {} in {}",
-                name,
-                stringify!($name),
-            ))),
-        }
-        _ => app.print_help().map_err(|err| { ::anyhow::Error::msg(err.to_string()) }),
     }
 }

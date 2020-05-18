@@ -2,13 +2,13 @@
 mod commands;
 #[macro_use]
 mod dispatchers;
-pub use dispatchers::dispatch;
-#[macro_use]
-mod hybrids;
+//#[macro_use]
+//mod hybrids;
 
 pub mod prelude {
     pub use ::anyhow::{Error,Result};
-    pub use ::clap::{App,ArgMatches};
+    pub use ::clap::{App,Arg,ArgMatches};
+    pub use ::clap::Clap as _;
     pub use crate::Command as _;
     pub use crate::execute_command;
 }
@@ -27,4 +27,8 @@ pub fn execute_command<S>(
 pub trait Command<S> {
     fn execute(&mut self, state: &mut S, matches: &::clap::ArgMatches) -> ::anyhow::Result<()>;
     fn app<'a>(&self) -> ::clap::App<'a>;
+}
+
+pub trait Cmd<S, R> {
+    fn run(&self, state: &mut S) -> ::anyhow::Result<R>;
 }

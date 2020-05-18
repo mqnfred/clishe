@@ -10,3 +10,4 @@ edition = "2018"
 anyhow = "^1"
 # TODO: once published to crates.io, use 3.0.0 there
 clap = { git = "https://github.com/clap-rs/clap/" }
+paste = "^0"

@@ -3,48 +3,39 @@ macro_rules! hybrids {
     (
         $(
             $name:ident(
-                $state:ident: &mut $state_type:ty,
-                $matches:ident: &ArgMatches
-            ) -> Result<()> $body:block dispatches [
-                $($subcmd:ident,) *
-            ] using $app:expr,
-        ) *
+                &$self:ident,
+                $state:ident: &mut $state_ty:ty
+            ) -> Result<$ret_ty:ty> $body:block dispatches [
+                $(#[$meta:meta] $sub_name:ident: $sub:ty,)*
+            ]
+        )*
     ) => {
         $(
-            pub struct $name {
-                subs: ::std::collections::BTreeMap<String, Box<dyn ::modularcli::Command<$state_type>>>,
-            }
-
-            impl Default for $name {
-                fn default() -> Self {
-                    type Command = Box<dyn ::modularcli::Command<$state_type>>;
-                    let mut subs = ::std::collections::BTreeMap::<String, Command>::default();
-                    $({
-                        let sub = $subcmd::default();
-                        subs.insert(sub.app().get_name().to_owned(), Box::new(sub));
-                    })*
-                    Self{subs}
+            ::paste::item! {
+                #[derive(Clap)]
+                pub struct $name {
+                    #[clap(subcommand)]
+                    subs: [< $name C o m m a n d s >],
                 }
             }
 
-            impl ::modularcli::Command<$state_type> for $name {
-                fn execute(
-                    &mut self,
-                    $state: &mut $state_type,
-                    $matches: &ArgMatches,
-                ) -> Result<()> {
-                    if $matches.subcommand_name().is_some() {
-                        let app = self.app();
-                        ::modularcli::dispatch(&mut self.subs, $state, $matches, app)
-                    } else $body
+            ::paste::item! {
+                #[derive(Clap)]
+                enum [< $name C o m m a n d s >] {
+                    $(
+                        #[$meta]
+                        $sub_name($sub),
+                    )*
                 }
+            }
 
-                fn app<'a>(&self) -> App<'a> {
-                    let mut app = $app;
-                    for (_, subcmd) in &self.subs {
-                        app = app.subcommand(subcmd.app());
+            ::paste::item! {
+                impl $name {
+                    pub fn run(&self, state: &mut $state_ty) -> Result<()> {
+                        match &self.subs {
+                            $([< $name C o m m a n d s >]::$sub_name(sub) => sub.run(state),)*
+                        }
                     }
-                    app
                 }
             }
         )*
