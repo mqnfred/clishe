@@ -10,6 +10,7 @@ dispatchers! {
     Food(&self, _: &mut Context) -> Result<()> [
         Meat: meat::Meat,
         Veggies: veggies::Veggies,
+        Shell: Shell<Context, (), Food>,
     ],
 }
 

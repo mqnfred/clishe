@@ -11,3 +11,5 @@ anyhow = "^1"
 # TODO: once published to crates.io, use 3.0.0 there
 clap = { git = "https://github.com/clap-rs/clap/" }
 paste = "^0"
+rustyline = "^5"
+shellwords = "^1"

@@ -3,7 +3,7 @@ macro_rules! dispatchers {
     (
         $(
             $(#[$meta:meta])?
-            $name:ident(&self, _: &mut $state_ty:ty) -> Result<$ret_ty:ty> [
+            $name:ident(&self, _: &mut $context_ty:ty) -> Result<$ret_ty:ty> [
                 $($(#[$sub_meta:meta])? $sub_name:ident: $sub_ty:ty,)*
             ],
         )*
@@ -28,10 +28,10 @@ macro_rules! dispatchers {
             }
 
             ::paste::item! {
-                impl Command<$state_ty, $ret_ty> for $name {
-                    fn run(&self, state: &mut $state_ty) -> Result<$ret_ty> {
+                impl Command<$context_ty, $ret_ty> for $name {
+                    fn run(&self, ctx: &mut $context_ty) -> Result<$ret_ty> {
                         match &self.__subs {
-                            $([< $name C o m m a n d s >]::$sub_name(sub) => sub.run(state),)*
+                            $([< $name C o m m a n d s >]::$sub_name(sub) => sub.run(ctx),)*
                         }
                     }
                 }
