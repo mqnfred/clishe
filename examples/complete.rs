@@ -42,16 +42,16 @@ mod veggies {
         } struct {
             #[clap(short, long)]
             name: Option<String>,
-        }
+        },
 
         Lettuce(&self, _ctx: &mut crate::Context) -> Result<()> {
-            if let Some(name) = self.name.as_ref() {
-                println!("Welcome to the table, {}", self.name.as_ref().map(|s| s.as_ref()).unwrap_or("unknown"));
-            }
+            println!("Welcome to the table, {}", self.name.as_ref().map(|s| {
+                s.as_ref()
+            }).unwrap_or("unknown"));
             Ok(())
         } struct {
             name: Option<String>,
-        }
+        },
     }
 }
 
@@ -76,6 +76,6 @@ mod meat {
             Ok(())
         } struct {
             name: String,
-        }
+        },
     }
 }

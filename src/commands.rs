@@ -8,7 +8,7 @@ macro_rules! commands {
                 $context:ident: &mut $context_ty:ty
             ) -> Result<$ret_ty:ty> $body:block struct {
                 $($(#[$sub_meta:meta])? $field_name:ident: $field_ty:ty,)*
-            }
+            },
         ) *
     ) => {
         $(
