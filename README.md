@@ -106,6 +106,7 @@ SUBCOMMANDS:
     help          Prints this message or the help of the given subcommand(s)
     meat          Nothing like a properly cooked meat
     vegetables    Fresh from the garden
+
 $ ./modularcli vegetables lettuce friend
 success: Hello, friend!
 ```
