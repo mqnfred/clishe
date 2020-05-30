@@ -4,7 +4,7 @@ macro_rules! commands {
         $(
             $(#[$meta:meta])?
             $name:ident(
-                &$self:ident,
+                $self:ident,
                 $context:ident: &mut $context_ty:ty
             ) -> Result<$ret_ty:ty> $body:block struct {
                 $($(#[$sub_meta:meta])? $field_name:ident: $field_ty:ty,)*
@@ -19,7 +19,7 @@ macro_rules! commands {
             }
 
             impl $name {
-                pub fn run(&$self, $context: &mut $context_ty) -> Result<$ret_ty> $body
+                pub fn run($self, $context: &mut $context_ty) -> Result<$ret_ty> $body
             }
         ) *
     }

@@ -17,7 +17,7 @@ pub struct Context(String);
 
 dispatchers! {
     // The return type must be the same    vv  for every command and dispatcher in the tree.
-    Food(&self, _: &mut Context) -> Result<()> [
+    Food(self, _: &mut Context) -> Result<()> [
         Veggies: veggies::Veggies,
         Meat: meat::Meat,
     ],
@@ -28,7 +28,7 @@ mod veggies {
 
     dispatchers! {
         #[clap(about = "Fresh from the garden")]
-        Veggies(&self, _: &mut crate::Context) -> Result<()> [
+        Veggies(self, _: &mut crate::Context) -> Result<()> [
             Carrots: Carrots,
             Lettuce: Lettuce,
             #[clap(alias = "sh")]
@@ -37,14 +37,14 @@ mod veggies {
     }
 
     commands! {
-        Carrots(&self, _ctx: &mut crate::Context) -> Result<()> {
+        Carrots(self, _ctx: &mut crate::Context) -> Result<()> {
             Ok(())
         } struct {
             #[clap(short, long)]
             name: Option<String>,
         },
 
-        Lettuce(&self, _ctx: &mut crate::Context) -> Result<()> {
+        Lettuce(self, _ctx: &mut crate::Context) -> Result<()> {
             println!("Welcome to the table, {}", self.name.as_ref().map(|s| {
                 s.as_ref()
             }).unwrap_or("unknown"));
@@ -61,7 +61,7 @@ mod meat {
     dispatchers! {
         // Overriding the command name at this level is not going to work
         #[clap(name = "carne", about = "Chillin n Grillin")]
-        Meat(&self, _: &mut crate::Context) -> Result<()> [
+        Meat(self, _: &mut crate::Context) -> Result<()> [
             // If you want to override the name of a command, do it here.
             #[clap(name = "boeuf")]
             Beef: Beef,
@@ -71,7 +71,7 @@ mod meat {
     commands! {
         // The "about" override here and the "name" override in the Meat dispatcher will combine.
         #[clap(about = "Beef. It's What for Dinner")]
-        Beef(&self, ctx: &mut crate::Context) -> Result<()> {
+        Beef(self, ctx: &mut crate::Context) -> Result<()> {
             ctx.0 = format!("Welcome to the table, {}!", self.name);
             Ok(())
         } struct {

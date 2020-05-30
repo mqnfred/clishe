@@ -1,3 +1,5 @@
+pub extern crate paste;
+
 #[macro_use]
 mod commands;
 #[macro_use]
@@ -11,7 +13,7 @@ pub mod prelude {
 }
 
 pub trait Command<C, R> {
-    fn run(&self, ctx: &mut C) -> ::anyhow::Result<R>;
+    fn run(self, ctx: &mut C) -> ::anyhow::Result<R>;
 }
 
 pub struct Shell<C, R, A: ::clap::Clap + Command<C, R>> {
