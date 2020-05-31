@@ -110,20 +110,3 @@ SUBCOMMANDS:
 $ ./clishe vegetables lettuce friend
 success: Hello, friend!
 ```
-
-## TODO
-
-### Bugs
-
-### Features
-
- - Provide additional built-in shell using rustyline
- - Auto-completion integrated to the framework
-
-### Testing
-
- - Test more use-cases
-
-### Documentation
-
- - Example in the README.md does not show enough clap attributes used

@@ -15,5 +15,5 @@ rustyline = { version = "^5", optional = true }
 shellwords = { version = "^1", optional = true }
 
 [features]
-default = []
+default = ["shell"]
 shell = ["rustyline", "shellwords"]
