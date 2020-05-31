@@ -7,7 +7,7 @@ around the following values:
  2. Skeleton around to command args, mutable state (context), return type
  3. Command implementation and definition live side-to-side
  4. We should be able to generate shells on-demand based on a cli
- 5. Auto-complete is a first-class citizen, in and out of the inner shell
+ 5. Auto-complete is a first-class citizen, in and out of the inner shell [wip]
 
 When creating an ecosystem, clis are a great gateway into parts of the
 ecosystem's deep libraries (encoding, server clients, ...) Lowering the barrier
