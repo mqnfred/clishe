@@ -10,8 +10,10 @@ around the following values:
  5. Auto-complete is a first-class citizen, in and out of the inner shell [wip]
 
 When creating an ecosystem, clis are a great gateway into parts of the
-ecosystem's deep libraries (encoding, server clients, ...) Lowering the barrier
-to creating a sane cli is the objective of this library.
+ecosystem's deep libraries (encoding, server clients, ...) It helps a great
+deal with operating and introspecting the ecosystem and its dataset. Lowering
+the barrier to creating a sane cli is the objective of this library, by being
+opinionated and providing common structures across clis.
 
 Clishé is a surprisingly thin wrapper around the following technologies:
 
