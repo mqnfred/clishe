@@ -193,5 +193,5 @@ You can also invoke the shell and "enter" the cli:
 $ cargo run --example complete shell
 > veggies lettuce friend
 Welcome to the table, friend
-> 
+> _
 ```
