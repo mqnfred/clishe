@@ -9,7 +9,7 @@ macro_rules! dispatchers {
         )*
     ) => {
         $(
-            ::modularcli::paste::item! {
+            ::clishe::paste::item! {
                 #[derive(Clap)]
                 $(#[$meta])*
                 pub struct $name {
@@ -18,7 +18,7 @@ macro_rules! dispatchers {
                 }
             }
 
-            ::modularcli::paste::item! {
+            ::clishe::paste::item! {
                 #[derive(Clap)]
                 enum [< $name C o m m a n d s >] {
                     $(
@@ -27,7 +27,7 @@ macro_rules! dispatchers {
                 }
             }
 
-            ::modularcli::paste::item! {
+            ::clishe::paste::item! {
                 impl Command<$context_ty, $ret_ty> for $name {
                     fn run(self, ctx: &mut $context_ty) -> Result<$ret_ty> {
                         match self.__subs {

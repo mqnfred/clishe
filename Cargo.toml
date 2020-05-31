@@ -1,5 +1,5 @@
 [package]
-name = "modularcli"
+name = "clishe"
 version = "0.1.0"
 authors = ["Louis Feuvrier <mqnfred@gmail.com>"]
 edition = "2018"

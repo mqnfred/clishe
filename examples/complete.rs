@@ -1,8 +1,8 @@
 #[macro_use]
 extern crate clap;
 #[macro_use]
-extern crate modularcli;
-use ::modularcli::prelude::*;
+extern crate clishe;
+use ::clishe::prelude::*;
 
 fn main() {
     let mut ctx = Context("".to_owned());
@@ -24,7 +24,7 @@ dispatchers! {
 }
 
 mod veggies {
-    use ::modularcli::prelude::*;
+    use ::clishe::prelude::*;
 
     dispatchers! {
         #[clap(about = "Fresh from the garden")]
@@ -56,7 +56,7 @@ mod veggies {
 }
 
 mod meat {
-    use ::modularcli::prelude::*;
+    use ::clishe::prelude::*;
 
     dispatchers! {
         // Overriding the command name at this level is not going to work
