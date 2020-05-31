@@ -49,7 +49,7 @@ dispatchers! {
     // root of our cli application.
     #[clap(
         name = "clishe",
-        version = "0.1.0",
+        version = "0.2.0",
         about = "Food market",
         before_help = "In case you're hungry, here is a",
         after_help = "For you",

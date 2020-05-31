@@ -1,3 +1,5 @@
+[![Crates.io](https://img.shields.io/crates/v/clishe)](https://crates.io/clishe) [![badge](https://docs.rs/clishe/badge.svg)](https://docs.rs/clishe/)
+
 # Clishé
 
 Clishé is a cli mini-framework in rust. Write your CLI using an idiom axed
@@ -78,7 +80,7 @@ dispatchers! {
     // root of our cli application.
     #[clap(
         name = "clishe",
-        version = "0.1.0",
+        version = "0.2.0",
         about = "Food market",
         before_help = "In case you're hungry, here is a",
         after_help = "For you",
