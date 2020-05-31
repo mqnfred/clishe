@@ -14,7 +14,7 @@ edition = "2018"
 [dependencies]
 anyhow = "^1"
 # TODO: once published to crates.io, use 3.0.0 there
-clap = { git = "https://github.com/clap-rs/clap/" }
+clap = { git = "https://github.com/clap-rs/clap/", version = "3.0.0-beta.1" }
 paste = "^0"
 rustyline = { version = "^5", optional = true }
 shellwords = { version = "^1", optional = true }
