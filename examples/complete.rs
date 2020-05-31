@@ -1,5 +1,5 @@
-// NOTE: If you edit this file, please paste it
-// (without this note) into the README.md file.
+// NOTE: If you edit this file, please paste it (without this note) into
+// the README.md and as a documentation comment in the src/lib.rs file.
 
 #[macro_use]
 extern crate clap;
