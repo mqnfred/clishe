@@ -1,4 +1,4 @@
-[![Crates.io](https://img.shields.io/crates/v/clishe)](https://crates.io/clishe) [![badge](https://docs.rs/clishe/badge.svg)](https://docs.rs/clishe/)
+[![crates.io][1]][2] [![doc.rs][3]][4]
 
 # Clishé
 
@@ -209,3 +209,8 @@ $ cargo run --example complete shell
 Welcome to the table, friend
 > _
 ```
+
+[1]: https://img.shields.io/crates/v/clishe
+[2]: https://crates.io/clishe
+[3]: https://docs.rs/clishe/badge.svg
+[4]: https://docs.rs/clishe/
