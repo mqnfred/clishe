@@ -73,6 +73,16 @@ pub struct Returned;
 // application is often a dispatcher. The application then takes the shape of a
 // tree of dispatcher nodes, with commands!{} implementations as leaves.
 dispatchers! {
+    // Any of the clap attributes you would use on top of the main clap app,
+    // we will use here on the Food dispatcher, as we have chosen it to be the
+    // root of our cli application.
+    #[clap(
+        name = "clishe",
+        version = "0.1.0",
+        about = "Food market",
+        before_help = "In case you're hungry, here is a",
+        after_help = "For you",
+    )]
     Food(self, _: &mut Context) -> Result<Returned> [
         Veggies: veggies::Veggies,
         Meat: meat::Meat,
