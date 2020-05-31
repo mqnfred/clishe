@@ -80,7 +80,7 @@ dispatchers! {
         //     Welcome to the table, friend
         //     > 
         #[clap(alias = "sh", about = "The subcommands of this command in a shell")]
-        Shell: Shell<crate::Context, Returned, Food>,
+        Shell: Shell<Context, Returned, Food>,
     ],
 }
 
