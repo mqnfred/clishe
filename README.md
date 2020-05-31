@@ -1,7 +1,7 @@
+# Clishé
+
 [![crates.io](https://img.shields.io/crates/v/clishe)](https://crates.io/clishe)
 [![badge](https://docs.rs/clishe/badge.svg)](https://docs.rs/clishe/)
-
-# Clishé
 
 Clishé is a cli mini-framework in rust. Write your CLI using an idiom axed
 around the following values:
