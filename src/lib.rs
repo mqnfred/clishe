@@ -1,18 +1,17 @@
 //! Clishé is a cli mini-framework in rust.
 //!
-//! Write your CLI using an idiom axed around the following values:
+//! Write your CLI using an idiom focused on the following values:
 //!
-//!  1. Reduction of boilerplate/plumbing for repetitive command declaration
-//!  2. Skeleton around to command args, mutable state (context), return type
-//!  3. Command implementation and definition live side-to-side
+//!  1. Reduction of boilerplate for repetitive command declaration
+//!  2. Command implementation and definition live side-to-side
+//!  3. Control-flow skeleton around args, mutable state (context), return type
 //!  4. We should be able to generate shells on-demand based on a cli
 //!  5. Auto-complete is a first-class citizen, in and out of the inner shell [wip]
 //!
-//! When creating an ecosystem, clis are a great gateway into parts of the
-//! ecosystem's deep libraries (encoding, server clients, ...) It helps a great
-//! deal with operating and introspecting the ecosystem and its dataset. Lowering
-//! the barrier to creating a sane cli is the objective of this library, by being
-//! opinionated and providing common structures across clis.
+//! When I work on my rust ecosystem, I sometimes find it necessary to "try out a
+//! piece" by calling some specific endpoint or library API. It should be trivial
+//! to create small, re-usable clis for these purposes. This is what clishé aims to
+//! achieve by being opinionated and limiting scaffolding.
 //!
 //! Clishé is a surprisingly thin wrapper around the following technologies:
 //!
@@ -20,9 +19,9 @@
 //!  - `clap` for cli building
 //!  - `rustyline`/`shellwords` for shell generation
 //!
-//! Most of the features powering this framework are owed to the authors of these
-//! great crates. This crate is more of a DSL and library linking together
-//! different technologies to solve a set of problems.
+//! Those libraries contribute most of its power to this framework, which is not
+//! much more than a collection of technologies, a thin
+//! [DSL](https://en.wikipedia.org/wiki/Domain-specific_language) and an opinion.
 //!
 //! ## Example
 //!
