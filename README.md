@@ -3,8 +3,8 @@
 [![crates.io](https://img.shields.io/crates/v/clishe)](https://crates.io/clishe)
 [![badge](https://docs.rs/clishe/badge.svg)](https://docs.rs/clishe/)
 
-Clishé is a cli mini-framework in rust. Write your CLI using an idiom axed
-around the following values:
+Clishé is a cli mini-framework in rust. Write your CLI using an idiom focused
+on the following values:
 
  1. Reduction of boilerplate for repetitive command declaration
  2. Command implementation and definition live side-to-side
