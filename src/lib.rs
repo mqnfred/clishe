@@ -198,7 +198,7 @@ pub mod prelude {
     #[cfg(feature = "shell")]
     pub use crate::Shell;
     pub use anyhow::{Error, Result};
-    pub use clap::Clap;
+    pub use clap::Clap as _;
 }
 
 /// The trait implemented by all command types in the hierarchy.
