@@ -94,7 +94,7 @@
 //!         //     $ cargo run --example complete shell
 //!         //     > veggies lettuce friend
 //!         //     Welcome to the table, friend
-//!         //     > 
+//!         //     >
 //!         #[clap(alias = "sh", about = "Subcommands of this in a shell")]
 //!         Shell: Shell<Context, Returned, Food>,
 //!     ],
@@ -192,13 +192,13 @@ mod dispatchers;
 /// of brevity in the macro rules DSL, we choose to bring those objects into scope in the modules
 /// declaring and defining commands.
 pub mod prelude {
-    pub use ::anyhow::{Error,Result};
-    pub use ::clap::Clap as _;
-    pub use crate::Command;
     pub use crate::commands;
     pub use crate::dispatchers;
+    pub use crate::Command;
     #[cfg(feature = "shell")]
     pub use crate::Shell;
+    pub use anyhow::{Error, Result};
+    pub use clap::Clap;
 }
 
 /// The trait implemented by all command types in the hierarchy.
