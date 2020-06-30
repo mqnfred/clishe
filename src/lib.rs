@@ -220,6 +220,12 @@ pub trait Command<C, R> {
 ///  - Return type (same as command hierarchy)
 ///  - Dispatcher to create a shell for (can be self-referential)
 ///
+/// This object is only built if you set the *shell* feature while importing:
+///
+/// ```toml
+/// clishe = { version = "^0", features = ["shell"] }
+/// ```
+///
 /// # Example
 ///
 /// ```ignore
