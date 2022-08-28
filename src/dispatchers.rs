@@ -45,7 +45,7 @@ macro_rules! dispatchers {
     ) => {
         $(
             ::clishe::paste::item! {
-                #[derive(Clap)]
+                #[derive(Parser)]
                 $(#[$meta])*
                 pub struct $name {
                     #[clap(subcommand)]
@@ -54,7 +54,7 @@ macro_rules! dispatchers {
             }
 
             ::clishe::paste::item! {
-                #[derive(Clap)]
+                #[derive(Parser)]
                 enum [< $name C o m m a n d s >] {
                     $(
                         $(#[$sub_meta])* $sub_name($sub_ty),

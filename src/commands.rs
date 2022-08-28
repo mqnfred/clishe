@@ -51,7 +51,7 @@ macro_rules! commands {
         ) *
     ) => {
         $(
-            #[derive(Clap)]
+            #[derive(Parser)]
             $(#[$meta])*
             pub struct $name {
                 $($(#[$sub_meta])* $field_name: $field_ty,)*
