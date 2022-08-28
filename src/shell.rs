@@ -1,11 +1,11 @@
 use ::rustyline::config::Configurer;
 
-impl<C, R, A> ::clap::Clap for crate::Shell<C, R, A>
-    where A: ::clap::Clap + crate::Command<C, R>
+impl<C, R, A> ::clap::Parser for crate::Shell<C, R, A>
+    where A: ::clap::Parser + crate::Command<C, R>
 {}
 
 impl<C, R, A> ::clap::IntoApp for crate::Shell<C, R, A>
-    where A: ::clap::Clap + crate::Command<C, R>,
+    where A: ::clap::Parser + crate::Command<C, R>,
 {
     fn into_app<'b>() -> ::clap::App<'b> {
         // TODO: the app should feature a clap `about`, but it does not look
@@ -13,24 +13,31 @@ impl<C, R, A> ::clap::IntoApp for crate::Shell<C, R, A>
         ::clap::App::new("shell").about("Try out this CLI in a shell!")
     }
 
-    fn augment_clap<'b>(app: ::clap::App<'b>) -> ::clap::App<'b> {
-        app
+    fn into_app_for_update<'b>() -> ::clap::App<'b> {
+        Self::into_app()
     }
 }
 impl<C, R, A> ::clap::FromArgMatches for crate::Shell<C, R, A>
-    where A: ::clap::Clap + crate::Command<C, R>,
+    where A: ::clap::Parser + crate::Command<C, R>,
 {
-    fn from_arg_matches(_matches: &::clap::ArgMatches) -> Self {
-        Self{
+    fn from_arg_matches(_matches: &::clap::ArgMatches) -> Result<Self, ::clap::Error> {
+        Ok(Self{
             _phda: ::std::marker::PhantomData::<A>,
             _phdc: ::std::marker::PhantomData::<C>,
             _phdr: ::std::marker::PhantomData::<R>,
-        }
+        })
+    }
+
+    fn update_from_arg_matches(
+        &mut self,
+        _matches: &::clap::ArgMatches,
+    ) -> Result<(), ::clap::Error> {
+        Ok(())
     }
 }
 
 impl<C, R, A> crate::Command<C, R> for crate::Shell<C, R, A>
-    where A: ::clap::Clap + crate::Command<C, R>,
+    where A: ::clap::Parser + crate::Command<C, R>,
 {
     fn run(self, ctx: &mut C) -> ::anyhow::Result<R> {
         let mut rl = ::rustyline::Editor::<()>::new();

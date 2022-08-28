@@ -40,7 +40,7 @@ use ::clishe::prelude::*;
 
 fn main() {
     let mut ctx = Context("".to_owned());
-    // The same static methods available to the ::clap::Clap trait are
+    // The same static methods available to the ::clap::Parser trait are
     // available here. If you have a vector of arguments, just use
     // `parse_from()`. If you want to capture the parsing errors instead of
     // letting clap print them and exit them, you should use `try_parse()`
