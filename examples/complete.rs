@@ -3,8 +3,6 @@
 
 #[macro_use]
 extern crate clap;
-#[macro_use]
-extern crate clishe;
 use ::clishe::prelude::*;
 
 fn main() {
