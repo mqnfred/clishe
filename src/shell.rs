@@ -4,6 +4,18 @@ impl<C, R, A> ::clap::Parser for crate::Shell<C, R, A>
     where A: ::clap::Parser + crate::Command<C, R>
 {}
 
+impl<C, R, A> ::clap::Args for crate::Shell<C, R, A>
+    where A: ::clap::Parser + crate::Command<C, R>
+{
+    fn augment_args<'b>(cmd: ::clap::Command<'b>) -> ::clap::Command<'b> {
+        cmd
+    }
+
+    fn augment_args_for_update<'b>(cmd: ::clap::Command<'b>) -> ::clap::Command<'b> {
+        cmd
+    }
+}
+
 impl<C, R, A> ::clap::IntoApp for crate::Shell<C, R, A>
     where A: ::clap::Parser + crate::Command<C, R>,
 {
@@ -17,6 +29,7 @@ impl<C, R, A> ::clap::IntoApp for crate::Shell<C, R, A>
         Self::into_app()
     }
 }
+
 impl<C, R, A> ::clap::FromArgMatches for crate::Shell<C, R, A>
     where A: ::clap::Parser + crate::Command<C, R>,
 {
