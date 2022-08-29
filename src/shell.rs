@@ -40,7 +40,7 @@ impl<C, R, A> crate::Command<C, R> for crate::Shell<C, R, A>
     where A: ::clap::Parser + crate::Command<C, R>,
 {
     fn run(self, ctx: &mut C) -> ::anyhow::Result<R> {
-        let mut rl = ::rustyline::Editor::<()>::new();
+        let mut rl = ::rustyline::Editor::<()>::new()?;
         rl.set_completion_type(::rustyline::CompletionType::List);
         rl.set_edit_mode(::rustyline::EditMode::Vi);
 
