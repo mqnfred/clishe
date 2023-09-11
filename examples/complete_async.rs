@@ -5,14 +5,15 @@
 extern crate clap;
 use ::clishe::prelude::*;
 
-fn main() {
+#[tokio::main]
+async fn main() {
     let mut ctx = Context("".to_owned());
     // The same static methods available to the ::clap::Parser trait are
     // available here. If you have a vector of arguments, just use
     // `parse_from()`. If you want to capture the parsing errors instead of
     // letting clap print them and exit them, you should use `try_parse()`
     //                      vvvvv
-    if let Err(err) = Food::parse().run(&mut ctx) {
+    if let Err(err) = Food::parse().run(&mut ctx).await {
         // ^^^^^^^^ We ignore the Ok(_) scenario here since Returned is a
         // useless unit struct, but this is where we would handle it if the
         // returned value was meaningful.
@@ -41,7 +42,7 @@ pub struct Returned;
 // Dispatchers are commands which hold sub-commands. The root of a cli-like
 // application is often a dispatcher. The application then takes the shape of a
 // tree of dispatcher nodes, with commands!{} implementations as leaves.
-dispatchers! {
+async_dispatchers! {
     // Any of the clap attributes you would use on top of the main clap app,
     // we will use here on the Food dispatcher, as we have chosen it to be the
     // root of our cli application.
@@ -55,18 +56,6 @@ dispatchers! {
     Food(self, _: &mut Context) -> Result<Returned> [
         Veggies: veggies::Veggies,
         Meat: meat::Meat,
-        // The shell command comes with the clishe library. It usually takes a
-        // dispatcher and starts a shell using the rustyline library in which
-        // all sub-commands of the dispatcher are available as first-level
-        // commands. From the point-of-view of the user of the binary, it will
-        // look something like this:
-        //
-        //     $ cargo run --example complete shell
-        //     > veggies lettuce friend
-        //     Welcome to the table, friend
-        //     > 
-        #[clap(alias = "sh", about = "Subcommands of this in a shell")]
-        Shell: Shell<Context, Returned, Food>,
     ],
 }
 
@@ -75,7 +64,7 @@ mod veggies {
 
     // All dispatchers are created equal, they
     // could all be used as the root of an app.
-    dispatchers! {
+    async_dispatchers! {
         // All clap macro attributes available on
         // top of clap commands can be used here.
         #[clap(about = "Welcome to the Jungle")]
@@ -92,7 +81,7 @@ mod veggies {
     // They are used as leaves under the dispatchers. They could also be used
     // as the root of the application, making most of the point of the
     // framework moot!
-    commands! {
+    async_commands! {
         Carrots(self, _ctx: &mut crate::Context) -> Result<crate::Returned> {
             Ok(crate::Returned)
         } struct {
@@ -118,7 +107,7 @@ mod veggies {
 mod meat {
     use ::clishe::prelude::*;
 
-    dispatchers! {
+    async_dispatchers! {
         // Overriding the command name at this level is not going to work.
         #[clap(name = "carne", about = "Aimez la viande, mangez-en mieux")]
         Meat(self, _: &mut crate::Context) -> Result<crate::Returned> [
@@ -133,7 +122,7 @@ mod meat {
         ],
     }
 
-    commands! {
+    async_commands! {
         // The "about" override here and the "name"
         // override in the Meat dispatcher will combine.
         #[clap(about = "Beef. It's What for Dinner")]

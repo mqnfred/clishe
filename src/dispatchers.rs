@@ -74,3 +74,49 @@ macro_rules! dispatchers {
         )*
     }
 }
+
+/// Defines a DSL to introduce subcommand dispatcher commands.
+///
+/// This is the same as `dispatchers!` but the `run` method is async.
+#[macro_export]
+macro_rules! async_dispatchers {
+    (
+        $(
+            $(#[$meta:meta])?
+            $name:ident(self, _: &mut $context_ty:ty) -> Result<$ret_ty:ty> [
+                $($(#[$sub_meta:meta])? $sub_name:ident: $sub_ty:ty,)*
+            ],
+        )*
+    ) => {
+        $(
+            ::clishe::paste::item! {
+                #[derive(Parser)]
+                $(#[$meta])*
+                pub struct $name {
+                    #[clap(subcommand)]
+                    __subs: [< $name C o m m a n d s >],
+                }
+            }
+
+            ::clishe::paste::item! {
+                #[derive(Parser)]
+                enum [< $name C o m m a n d s >] {
+                    $(
+                        $(#[$sub_meta])* $sub_name($sub_ty),
+                    )*
+                }
+            }
+
+            ::clishe::paste::item! {
+                #[async_trait::async_trait]
+                impl AsyncCommand<$context_ty, $ret_ty> for $name {
+                    async fn run(self, ctx: &mut $context_ty) -> Result<$ret_ty> {
+                        match self.__subs {
+                            $([< $name C o m m a n d s >]::$sub_name(sub) => sub.run(ctx).await,)*
+                        }
+                    }
+                }
+            }
+        )*
+    }
+}

@@ -77,7 +77,7 @@
 //!     // root of our cli application.
 //!     #[clap(
 //!         name = "clishe",
-//!         version = "0.2.0",
+//!         version = "0.3.0",
 //!         about = "Food market",
 //!         before_help = "In case you're hungry, here is a",
 //!         after_help = "For you",
@@ -194,7 +194,9 @@ mod dispatchers;
 pub mod prelude {
     pub use crate::commands;
     pub use crate::dispatchers;
-    pub use crate::Command;
+    pub use crate::async_commands;
+    pub use crate::async_dispatchers;
+    pub use crate::{Command,AsyncCommand};
     #[cfg(feature = "shell")]
     pub use crate::Shell;
     pub use anyhow::{Error, Result};
@@ -209,6 +211,14 @@ pub mod prelude {
 /// rules, which spawn objects implementing this `Command` trait.
 pub trait Command<C, R> {
     fn run(self, ctx: &mut C) -> ::anyhow::Result<R>;
+}
+
+/// The trait implemented by all command types in the hierarchy.
+///
+/// This trait is equivalent to the `Command` trait, but for async commands.
+#[async_trait::async_trait]
+pub trait AsyncCommand<C, R> {
+    async fn run(self, ctx: &mut C) -> ::anyhow::Result<R>;
 }
 
 /// A command that spawns a shell of the provided dispatcher type.
